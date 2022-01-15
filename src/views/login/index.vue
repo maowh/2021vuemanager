@@ -1,18 +1,23 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form">
+    <el-form class="login-form" :model="loginForm" :rules="loginRules">
       <div class="title-container">
         <h3 class="title">用户登录</h3>
       </div>
       <!-- username -->
-      <el-form-item>
+      <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon="user"></svg-icon>
         </span>
-        <el-input placeholder="username" name="username" type="text"></el-input>
+        <el-input
+          placeholder="username"
+          name="username"
+          type="text"
+          v-model="loginForm.username"
+        ></el-input>
       </el-form-item>
       <!-- password -->
-      <el-form-item>
+      <el-form-item prop="password">
         <!-- <span class="svg-container">
           <el-icon>
             <Avatar />
@@ -23,7 +28,11 @@
           <!-- <svg-icon icon="https://res.lgdsunday.club/user.svg"></svg-icon> -->
         </span>
 
-        <el-input placeholder="password" name="password"></el-input>
+        <el-input
+          placeholder="password"
+          name="password"
+          v-model="loginForm.password"
+        ></el-input>
         <span class="show-pwd">
           <span class="svg-container">
             <svg-icon icon="eye"></svg-icon>
@@ -42,7 +51,30 @@
 // 导入的组件可以直接使用，不用再使用component进行注册
 // import { Avatar } from '@element-plus/icons'
 // import SvgIcon from '@/components/SvgIcon/index.vue'
-import {} from 'vue'
+import { ref } from 'vue'
+import { validatePassword } from './rules'
+// 数据源
+const loginForm = ref({
+  username: 'super-admin',
+  password: '123456'
+})
+// 验证规则
+const loginRules = ref({
+  username: [
+    {
+      required: true,
+      trigger: 'blur',
+      message: '用户名为必填项'
+    }
+  ],
+  password: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator: validatePassword()
+    }
+  ]
+})
 </script>
 
 <style lang="scss" scoped>
