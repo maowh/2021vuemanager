@@ -31,11 +31,14 @@
         <el-input
           placeholder="password"
           name="password"
+          :type="passwordType"
           v-model="loginForm.password"
         ></el-input>
         <span class="show-pwd">
-          <span class="svg-container">
-            <svg-icon icon="eye"></svg-icon>
+          <span class="svg-container" @click="onChangePwdType">
+            <svg-icon
+              :icon="passwordType === 'password' ? 'eye' : 'eye-open'"
+            ></svg-icon>
           </span>
         </span>
       </el-form-item>
@@ -75,6 +78,19 @@ const loginRules = ref({
     }
   ]
 })
+
+// 处理密码明文密文显示
+const passwordType = ref('password')
+// tempalte中绑定的方法，直接声明即可
+const onChangePwdType = () => {
+  // 当passwordType的值为password的时候，改为text
+  // 使用ref声明的数据，在script中使用时，需要加value来获取具体的值，但是在tempalte中使用的时候，不需要加value
+  if (passwordType.value === 'password') {
+    passwordType.value = 'text'
+  } else {
+    passwordType.value = 'password'
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -143,7 +159,7 @@ $cursor: #fff;
   .show-pwd {
     position: absolute;
     right: 10px;
-    top: 7px;
+    // top: 7px;
     font-size: 16px;
     color: $dark_gray;
     cursor: pointer;
