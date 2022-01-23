@@ -5,8 +5,9 @@ export const setItem = (key, value) => {
   // 2、复杂数据类型
   if (typeof value === 'object') {
     value = JSON.stringify(value)
-    window.localStorage.setItem(key, value)
   }
+  window.localStorage.setItem(key, value)
+  console.log(value)
 }
 // 获取数据
 export const getItem = (key) => {

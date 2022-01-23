@@ -18,7 +18,7 @@ export default {
     }
   },
   actions: {
-    // 登录请求动作
+    // 登录请求动作，登录系统后服务器返回token
     login(context, userInfo) {
       const { username, password } = userInfo
       // 无论登录成功then还是失败catch需要在组件进行对应的处理
@@ -29,7 +29,8 @@ export default {
           password: md5(password)
         })
           .then((data) => {
-            this.commit('user/setToken', data.data.data.token)
+            // 响应拦截器处理后直接用data.token
+            this.commit('user/setToken', data.token)
             resolve()
           })
           .catch((err) => {
