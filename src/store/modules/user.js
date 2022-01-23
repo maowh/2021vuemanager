@@ -1,12 +1,22 @@
 import { login } from '@/api/sys'
 import md5 from 'md5'
+import { setItem, getItem } from '@/utils/storage'
+// 导入token的常量
+import { TOKEN } from '@/constant'
 
 // 封装和用户登录请求有关的操作信息
 export default {
   // 表明一个单独模块，不具备合并到主模块
   namespaced: true,
-  state: () => ({}),
-  mutations: {},
+  state: () => ({
+    token: getItem(TOKEN) || ''
+  }),
+  mutations: {
+    setToken(state, token) {
+      state.token = token
+      setItem(TOKEN, token)
+    }
+  },
   actions: {
     // 登录请求动作
     login(context, userInfo) {
@@ -19,6 +29,7 @@ export default {
           password: md5(password)
         })
           .then((data) => {
+            this.commit('user/setToken', data.data.data.token)
             resolve()
           })
           .catch((err) => {
