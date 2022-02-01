@@ -3,6 +3,7 @@ import md5 from 'md5'
 import { setItem, getItem } from '@/utils/storage'
 // 导入token的常量
 import { TOKEN } from '@/constant'
+import router from '@/router'
 
 // 封装和用户登录请求有关的操作信息
 export default {
@@ -31,6 +32,8 @@ export default {
           .then((data) => {
             // 响应拦截器处理后直接用data.token
             this.commit('user/setToken', data.token)
+            // 跳转页面
+            router.push('/')
             resolve()
           })
           .catch((err) => {
