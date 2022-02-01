@@ -1,4 +1,4 @@
-import { login } from '@/api/sys'
+import { login, getUserInfo } from '@/api/sys'
 import md5 from 'md5'
 import { setItem, getItem } from '@/utils/storage'
 // 导入token的常量
@@ -10,12 +10,16 @@ export default {
   // 表明一个单独模块，不具备合并到主模块
   namespaced: true,
   state: () => ({
-    token: getItem(TOKEN) || ''
+    token: getItem(TOKEN) || '',
+    userInfo: {}
   }),
   mutations: {
     setToken(state, token) {
       state.token = token
       setItem(TOKEN, token)
+    },
+    setUserInfo(state, userInfo) {
+      state.userInfo = userInfo
     }
   },
   actions: {
@@ -40,6 +44,13 @@ export default {
             reject(err)
           })
       })
+    },
+    // 获取用户信息
+    async getUserInfo(context) {
+      const res = await getUserInfo()
+      // 触发store下的user模块的setUserInfo
+      this.commit('user/setUserInfo', res)
+      return res
     }
   }
 }

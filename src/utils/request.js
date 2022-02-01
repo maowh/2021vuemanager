@@ -1,6 +1,7 @@
 import axios from 'axios'
 // 导入element的消息提示
 import { ElMessage } from 'element-plus'
+import store from '@/store'
 
 const service = axios.create({
   // 根目录的.env文件的VUE_APP_BASE_API，根据开发环境和生产环境指定不同的baseURL
@@ -9,12 +10,21 @@ const service = axios.create({
 })
 
 // 请求拦截器
-service.interceptors.request.use((config) => {
-  // 添加 icode
-  config.headers.icode = '77A346E549F3ECF4'
-  // 必须返回 config
-  return config
-})
+service.interceptors.request.use(
+  (config) => {
+    // 添加 icode
+    config.headers.icode = '77A346E549F3ECF4'
+    // 在这里统一注入token
+    if (store.getters.token) {
+      config.headers.Authorization = `Bearer ${store.getters.token}`
+    }
+    // 必须返回 config
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 // 响应拦截器，对获取的data中的token数据进行处理
 service.interceptors.response.use(
