@@ -1,6 +1,6 @@
 import { login, getUserInfo } from '@/api/sys'
 import md5 from 'md5'
-import { setItem, getItem } from '@/utils/storage'
+import { setItem, getItem, removeAllItem } from '@/utils/storage'
 // 导入token的常量
 import { TOKEN } from '@/constant'
 import router from '@/router'
@@ -51,6 +51,14 @@ export default {
       // 触发store下的user模块的setUserInfo
       this.commit('user/setUserInfo', res)
       return res
+    },
+    // 退出登录
+    logout() {
+      this.commit('user/setToken', '')
+      this.commit('user/setUserInfo', {})
+      removeAllItem()
+      // todo:清理掉权限先关配置
+      router.push('/login')
     }
   }
 }
