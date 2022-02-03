@@ -4,6 +4,7 @@ import { setItem, getItem, removeAllItem } from '@/utils/storage'
 // 导入token的常量
 import { TOKEN } from '@/constant'
 import router from '@/router'
+import { setTimeStamp } from '@/utils/auth'
 
 // 封装和用户登录请求有关的操作信息
 export default {
@@ -38,6 +39,8 @@ export default {
             this.commit('user/setToken', data.token)
             // 跳转页面
             router.push('/')
+            // 保存登录时间
+            setTimeStamp()
             resolve()
           })
           .catch((err) => {
