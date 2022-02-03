@@ -5,6 +5,7 @@ const getters = {
   // 判断userInfo是否空对象，用户信息是否存在
   hasUserInfo: (state) => {
     return JSON.stringify(state.user.userInfo) !== '{}'
-  }
+  },
+  userInfo: (state) => state.user.userInfo
 }
 export default getters
