@@ -17,7 +17,7 @@ service.interceptors.request.use(
     config.headers.icode = '77A346E549F3ECF4'
     // 在这里统一注入token
     if (store.getters.token) {
-      if (isCheckTimeout) {
+      if (isCheckTimeout()) {
         // token超时执行退出操作，返回一个报错信息
         store.dispatch('user/logout')
         return Promise.reject(new Error('token 失效'))
