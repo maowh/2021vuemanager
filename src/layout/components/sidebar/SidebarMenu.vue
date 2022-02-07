@@ -2,6 +2,7 @@
   <!-- 一级 menu 菜单 -->
   <!-- uniqueOpened表示只允许一次选择一个选项 -->
   <el-menu
+    :collapse="!$store.getters.sidebarOpened"
     :uniqueOpened="true"
     :background-color="$store.getters.cssVar.menuBg"
     :text-color="$store.getters.cssVar.menuText"
