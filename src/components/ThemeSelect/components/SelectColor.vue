@@ -25,6 +25,7 @@
 <script setup>
 import { defineProps, defineEmits, ref } from 'vue'
 import { useStore } from 'vuex'
+import { generateNewStyle, writeNewStyle } from '@/utils/theme'
 defineProps({
   modelValue: {
     type: Boolean,
@@ -64,7 +65,11 @@ const closed = () => {
 // 需要将选中颜色存储到全局缓存包括vuex和localstorage
 // 确定按钮点击事件
 
-const confirm = () => {
+const confirm = async () => {
+  console.log(mColor.value)
+  const newStyle = await generateNewStyle(mColor.value)
+  console.log(newStyle)
+  writeNewStyle(newStyle)
   store.commit('theme/setMainColor', mColor.value)
   closed()
 }
