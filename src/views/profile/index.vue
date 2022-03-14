@@ -1,6 +1,5 @@
 <template>
   <div class="">
-    {{ $t('msg.test') }}
     <el-row class="mb-4">
       <el-button>Default</el-button>
       <el-button type="primary">Primary</el-button>
