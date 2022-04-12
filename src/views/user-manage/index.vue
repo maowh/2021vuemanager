@@ -5,7 +5,9 @@
         <el-button type="primary" @click="onImportExcelClick">{{
           $t('msg.excel.importExcel')
         }}</el-button>
-        <el-button type="success">{{ $t('msg.excel.exportExcel') }}</el-button>
+        <el-button type="success" @click="onToExcelClick">{{
+          $t('msg.excel.exportExcel')
+        }}</el-button>
       </div>
     </el-card>
     <!-- table -->
@@ -83,6 +85,8 @@
       >
       </el-pagination>
     </el-card>
+    <!-- v-model进行双向数据绑定 -->
+    <ExportToExcel v-model="exportToExcelVisible"></ExportToExcel>
   </div>
 </template>
 
@@ -93,6 +97,7 @@ import { watchSwitchLang } from '@/utils/i18n'
 import { useRouter } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import ExportToExcel from './components/Export2Excel'
 
 // 数据相关
 const tableData = ref([])
@@ -145,6 +150,11 @@ const onRemoveClick = (row) => {
 const router = useRouter()
 const onImportExcelClick = () => {
   router.push('/user/import')
+}
+// excel导出
+const exportToExcelVisible = ref(false)
+const onToExcelClick = () => {
+  exportToExcelVisible.value = true
 }
 </script>
 

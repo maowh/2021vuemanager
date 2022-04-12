@@ -7,6 +7,12 @@ export const getUserManageList = (data) => {
     params: data
   })
 }
+// 获取所有用户列表数据
+export const getUserManageAllList = () => {
+  return request({
+    url: '/user-manage/all-list'
+  })
+}
 // excel批量导入
 export const userBatchImport = (data) => {
   return request({
