@@ -40,9 +40,11 @@ const privateRoutes = [
         }
       },
       {
+        // 当路由的props设置为true时，route.params将被设置为组件的props
         path: '/user/info/:id',
         name: 'userInfo',
         component: () => import('@/views/user-info/index'),
+        props: true,
         meta: {
           title: 'userInfo'
         }
