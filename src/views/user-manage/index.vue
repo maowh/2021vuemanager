@@ -64,7 +64,7 @@
               @click="onShowClick(row._id)"
               >{{ $t('msg.excel.show') }}</el-button
             >
-            <el-button type="info" size="mini">{{
+            <el-button type="info" size="mini" @click="onShowRoleClick(row)">{{
               $t('msg.excel.showRole')
             }}</el-button>
             <el-button type="danger" size="mini" @click="onRemoveClick(row)">{{
@@ -88,19 +88,26 @@
       >
       </el-pagination>
     </el-card>
-    <!-- v-model进行双向数据绑定 -->
+    <!-- v-model进行双向数据绑定，roleDialogVisible将值传给子组件同时也接收子组件传过来的数据 -->
     <ExportToExcel v-model="exportToExcelVisible"></ExportToExcel>
+    <!-- @updateRole方法为子组件发射，执行更新脚本 -->
+    <RolesDialog
+      v-model="roleDialogVisible"
+      :userId="selectUserId"
+      @updateRole="getListData"
+    ></RolesDialog>
   </div>
 </template>
 
 <script setup>
-import { ref, onActivated } from 'vue'
+import { ref, onActivated, watch } from 'vue'
 import { getUserManageList, deleteUser } from '@/api/user-manage'
 import { watchSwitchLang } from '@/utils/i18n'
 import { useRouter } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import ExportToExcel from './components/Export2Excel'
+import RolesDialog from './components/roles.vue'
 
 // 数据相关
 const tableData = ref([])
@@ -139,6 +146,18 @@ const onShowClick = (id) => {
   router.push(`/user/info/${id}`)
 }
 
+// 为员工分配角色
+const roleDialogVisible = ref(false)
+const selectUserId = ref('')
+const onShowRoleClick = (row) => {
+  roleDialogVisible.value = true
+  selectUserId.value = row._id
+}
+// 解决同一个用户选择角色，selectUserId的值不变化情况，
+// 保证每次打开dialog都可以重新获取数据
+watch(roleDialogVisible, (val) => {
+  if (!val) selectUserId.value = ''
+})
 // 删除用户
 const i18n = useI18n()
 const onRemoveClick = (row) => {
