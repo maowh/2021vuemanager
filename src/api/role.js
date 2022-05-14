@@ -6,3 +6,19 @@ export const roleList = () => {
     url: '/role/list'
   })
 }
+
+// 获取当前角色应对权限
+export const rolePermission = (roleId) => {
+  return request({
+    url: `/role/permission/${roleId}`
+  })
+}
+
+// 为角色修改权限
+export const distributePermission = (data) => {
+  return request({
+    url: '/role/distribute-permission',
+    method: 'POST',
+    data
+  })
+}
