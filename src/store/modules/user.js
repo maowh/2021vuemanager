@@ -3,7 +3,7 @@ import md5 from 'md5'
 import { setItem, getItem, removeAllItem } from '@/utils/storage'
 // 导入token的常量
 import { TOKEN } from '@/constant'
-import router from '@/router'
+import router, { resetRouter } from '@/router'
 import { setTimeStamp } from '@/utils/auth'
 
 // 封装和用户登录请求有关的操作信息
@@ -57,6 +57,8 @@ export default {
     },
     // 退出登录
     logout() {
+      // 退出登录的时候清理路由
+      resetRouter()
       this.commit('user/setToken', '')
       this.commit('user/setUserInfo', {})
       removeAllItem()
