@@ -73,10 +73,11 @@
 </template>
 
 <script setup>
-import { ref, onActivated } from 'vue'
+import { ref, onActivated, onMounted } from 'vue'
 import { getArticleList } from '@/api/article'
 import { watchSwitchLang } from '@/utils/i18n'
 import { dynamicData, selectDynamicLable, tableColumns } from './dynamic/index'
+import { tableRef, initSortable } from './sortable'
 
 // 数据相关
 const tableData = ref([])
@@ -96,6 +97,13 @@ getListData()
 watchSwitchLang(getListData)
 // 页面缓存处理
 onActivated(getListData)
+
+// 在onMounted生命周期初始化sortable
+// 在onMounted生命周期传入，value在初始化才有值，只能传入ref
+// 传入getListData，重新刷新页面显示的排序
+onMounted(() => {
+  initSortable(tableData, getListData)
+})
 
 // 点击查看
 const onShowClick = (row) => {}
@@ -137,5 +145,10 @@ const handleCurrentChange = (currentPage) => {
     margin-top: 20px;
     text-align: center;
   }
+}
+::v-deep .sortable-ghost {
+  opacity: 0.6;
+  color: #fff;
+  background: #304156;
 }
 </style>
