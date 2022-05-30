@@ -1,8 +1,39 @@
 <template>
   <div class="article-ranking-container">
+    <el-card class="header">
+      <div class="dynamic-box">
+        <span class="title">{{ $t('msg.article.dynamicTitle') }}</span>
+        <el-checkbox-group v-model="selectDynamicLable">
+          <el-checkbox
+            v-for="(item, index) in dynamicData"
+            :key="index"
+            :label="item.label"
+            >{{ item.label }}</el-checkbox
+          >
+        </el-checkbox-group>
+      </div>
+      <div></div>
+    </el-card>
     <el-card>
       <el-table ref="tableRef" :data="tableData" border style="width: 100%">
-        <el-table-column prop="ranking" :label="$t('msg.article.ranking')">
+        <el-table-column
+          v-for="(item, index) in tableColumns"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          ><template v-if="item.prop === 'publicDate'" #default="{ row }">
+            {{ $filters.relativeTime(row.publicDate) }}
+          </template>
+          <template v-else-if="item.prop === 'action'" #default="{ row }">
+            <el-button type="primary" size="mini" @click="onShowClick(row)">
+              {{ $t('msg.article.show') }}
+            </el-button>
+            <el-button type="danger" size="mini" @click="onRemoveClick(row)">
+              {{ $t('msg.article.remove') }}
+            </el-button>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column prop="ranking" :label="$t('msg.article.ranking')">
         </el-table-column>
         <el-table-column prop="title" :label="$t('msg.article.title')">
         </el-table-column>
@@ -15,8 +46,6 @@
         </el-table-column>
         <el-table-column prop="desc" :label="$t('msg.article.desc')">
         </el-table-column>
-        <el-table-column prop="desc" :label="$t('msg.article.desc')">
-        </el-table-column>
         <el-table-column :label="$t('msg.article.action')">
           <template #default="{ row }">
             <el-button type="primary" size="mini" @click="onShowClick(row)">{{
@@ -26,7 +55,7 @@
               $t('msg.article.remove')
             }}</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <el-pagination
         class="pagination"
@@ -47,6 +76,7 @@
 import { ref, onActivated } from 'vue'
 import { getArticleList } from '@/api/article'
 import { watchSwitchLang } from '@/utils/i18n'
+import { dynamicData, selectDynamicLable, tableColumns } from './dynamic/index'
 
 // 数据相关
 const tableData = ref([])
