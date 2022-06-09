@@ -14,6 +14,12 @@ module.exports = {
         target: 'https://api.imooc-admin.lgdsunday.club/',
         changeOrigin: true // 是否跨域
       }
+      // /prod-api在nginx中进行配置
+      // '/prod-api': {
+      //   // 要代理的服务器地址  这里不用写 api
+      //   target: 'https://api.imooc-admin.lgdsunday.club/',
+      //   changeOrigin: true // 是否跨域
+      // }
     }
   },
   chainWebpack(config) {

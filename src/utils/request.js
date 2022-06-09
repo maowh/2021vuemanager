@@ -60,7 +60,7 @@ service.interceptors.response.use(
     ) {
       store.dispatch('user/logout')
     }
-    ElMessage.error(error)
+    ElMessage.error(error.message)
     return Promise.reject(error)
   }
 )
